@@ -1,0 +1,18 @@
+# Property file.  The Rules:
+# - Each property is a name/value pair, separated by a equal sign.  The name should be DNS characters only (letters, numbers, dot).
+# - Comment lines start with a # and are ignored.
+# - Blank lines (all whitespace) are ignored.
+# - Lines can be continued with a backslash character '\'
+# - Every line will be trimmed of whitespace at both ends, but intra-token whitespace will be preserved.
+# - A single property can have multiple values.  Each value is separated with a comma (',').
+# - The escape character is ?.  A double '??' will yield a single '?'.
+# - The , may be escaped with ?, as can the equal sign.
+# - It is assumed to be the default character set.
+#  
+
+project=PORTFOLIO
+copyright.notice=Copyright (C) 2009 Erich P Gatejen  All rights reserved.
+
+renderer.name=templatev1
+template.path.catalog=images/templatev1-main.html.ready
+

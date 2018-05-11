@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>[`<[project]>']</title>
+<style type="text/css">
+<!--
+.style5 {font-size: small; font-weight: bold; color: #FFFFFF; }
+.style7 {
+	font-size: x-large;
+	font-weight: bold;
+	color: #071489;
+}
+.ln {
+	color: #858585;	
+}
+body {
+	background-color: #E8E8F0;
+}
+.footer {
+	font-size: x-small;
+}
+.infobox {background-color:  #FAFAFA}
+.style8 {font-size: small}
+-->
+</style>
+</head>
+
+<body>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+    <tr><td><img src="[`<[root]>']images/s6.png"/></td></tr>
+  <tr>
+   	<td><table width="100%" border="1" cellpadding="3" cellspacing="0" bordercolor="#0E094A">
+		  <tr class="infobox">
+			<td>
+			  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="left">Source code for [`<[file]>']</td>
+                  <td align="right"><span class="style8">Original file </span>[`<[file.original]>']</td>
+                </tr>
+              </table></td>
+		  </tr>
+		</table>	</td>
+  </tr> 
+  <tr><td><img src="s6.png"/></td></tr>
+  <tr><td>
+  <pre>
+[`<[source.lines]>']
+  </pre>
+  </td></tr>
+</table>
+<br>
+<table width="100%">
+  <tr>
+    <td height="16" align="left" class="footer">[`<[copyright]>']</td>
+    <td align="right" class="footer">[`<[rendsite.notice]>']</td>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,66 @@
+; USE file for the XTile  Assembler routine lib
+;
+; COPYRIGHT (C) 1992 Erich P Gatejen 1992  All Rights Reserved
+;
+; File: XTILE.USE
+;
+; Mode X graphics manager.
+
+
+; XTile Asm Constants
+
+SC_INDEX	equ	03C4h 	;Sequence Controller Index
+CRTC_INDEX	equ     03D4h	;CRT Controller Index
+MISC_OUTPUT	equ	03C2h	;Misc. Output Reg.
+SCREEN_SEG	equ     0A000h	;Display memory seg.
+IN_STATUS0	equ	03c2h
+IN_STATUS1	equ     03DAh
+AC_INDEXR	equ	03c0h
+BIT_MASK	equ	08h	;Index to bit mask
+GC_INDEX	equ     03CEh	;Graphics Controller Index
+PAL_SET_COLOR   equ     03C8h	;Palette color set
+PAL_RGB_COLOR	equ	03C9h	;Palette data port
+
+
+PAGE0		equ	0	;Page 0 offset
+PAGE1		equ  	19200	;Page 1 offset
+BACKGROUND	equ	38400	;Background page offset
+STORE		equ	57600	;Image/Tile storage
+DIRECT_PAGE	equ	8	;Indicates direct load of write page offset
+
+SCREEN_W		equ	80		;Dec 80. Pix X. ( 80 x 4deep = 320 )
+
+; Dispositions for the SD_Move_Tile
+ON_SCREEN		equ	0
+TO_ALT_PAGE	equ  1
+TO_BACKGROUND  equ  2
+
+
+
+; Constants for mouse
+MOUSE_PRESENT	equ  0
+MOUSE_NOTPRES  equ	1
+MBACK_VALID    equ  0
+MBACK_INVALID  equ  1
+
+MOUSEPSIZE	equ	16			;  20 XBlocks per alignment
+MSAVEOFFSET	equ	0FFFFh - 16    ; Mouse background save site
+				; ^^Top of memory minus size in XBlocks of image
+MOUSEOFFSET    equ  0FFFFh - 80    ; Address for mouse pointer
+				; XBlocks adjustment is compensated by 4 alignments
+
+; Types of font register
+UPLOADFONT	equ	0
+DONTUPLOADFONT equ  1
+
+; MASKFONT write
+DOMASK		equ  1
+DONTMASK		equ  0
+
+; MOUSE HANDLER LOCK
+LOCKM		equ	1
+NOTLOCKM		equ	0
+
+; General
+TRUE			equ	1
+FALSE		equ	0

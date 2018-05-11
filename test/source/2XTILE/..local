@@ -1,0 +1,60 @@
+# Property file.  The Rules:
+# - Each property is a name/value pair, separated by a equal sign.  The name should be DNS characters only (letters, numbers, dot).
+# - Comment lines start with a # and are ignored.
+# - Blank lines (all whitespace) are ignored.
+# - Lines can be continued with an amperstand character '&' as the last character.
+# - Every line will be trimmed of whitespace at both ends, but intra-token whitespace will be preserved.
+# - A single property can have multiple values.  Each value is separated with a comma (',').
+# - The escape character is ?.  A double '??' will yield a single '?'.
+# - The , may be escaped with ?, as can the equal sign.
+# - It is assumed to be the default character set.
+#  
+# Local properties
+
+# file.exclude=README.TXT
+# file.copy=index.html
+directory.ignore=IGNORE_DIR
+
+description=XTILE is fast, full-feature VGA driver hand written in Assembler.  It has support for sprites, a mouse and fonts.  It &
+is intended to be used by a C or C++ program.  There are three versions--1.0, 2.0, and 2.1.  Version 1.0 was a shareware &
+release that expected payment for commercial usage or the source code.  Version 2.0 included split screen, a mouse driver, and &
+other new features.  It was to be a commercial-only release, but I sent a copy to all the registered shareware customers.  It seemed only &
+right.  For 2.1, I had to add 386 support to a few functions, as well as an adapted scaled-bitmap routine, so I could complete &
+a sale.  On top of a few bug fixes, this was the final version, and it was used in some commercial games, as well some personal &
+projects, such as the REVERSEM game.  I completed documentation only for the 1.0, since none of my commercial customers asked for &
+new documentation for 2.X (they did get my personal support).
+
+directory.1.name=Testing
+directory.1.type=C/ASM
+directory.1.desc=Unit testing programs
+
+file.1.name=XTILE.TXT
+file.1.desc=Documentation for version 1.0
+# file.1.type=RTF
+file.2.name=XTILE21!.ASM
+file.2.desc=Source code for version 2.1
+file.3.name=XTILE21!.H
+file.3.desc=C Header file for version 2.1
+
+file.4.name=2XTILE.zip
+file.4.desc=A complete package of all these files.
+
+file.5.name=XTILE21!.OBJ
+file.5.desc=Library for 2.1 (compiled with Borland)
+file.6.name=XTILE21!.USE
+file.6.desc=ASM include file for 2.1 source
+
+file.7.name=VGA2PIX.C
+file.7.desc=Convert a linear 8bit bitmap into a packed x-mode bitmap.
+file.8.name=XCOMBINE.C
+file.8.desc=Combine graphics data into a single file.
+file.9.name=MAKESPRI.C
+file.9.desc=Make a sprite from a 8bit bitmap.
+file.10.name=MASKTILE.C
+file.10.desc=Create a mask bitmap.
+file.11.name=MSKFONT4.C
+file.11.desc=Create a 4-pixel font mask.
+file.12.name=MSKFONT8.C
+file.12.desc=Create an 8-pixel font mask.
+ 
+ 

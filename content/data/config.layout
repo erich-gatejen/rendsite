@@ -1,0 +1,8 @@
+# MODIFIED FOR RENDSITE
+
+# Install config for regular distribution
+
+# BASIC CONFIGURATION
+config either recurse /bin
+
+

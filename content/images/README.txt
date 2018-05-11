@@ -1,0 +1,1 @@
+Stock templates and images.

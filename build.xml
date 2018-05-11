@@ -1,0 +1,180 @@
+<project name="rendsite" default="dist" basedir=".">
+    <description>
+        RendSite
+    </description>
+  <!-- set global properties for this build -->
+  <property name="rendsite.src" location="project/src"/>
+  <property name="rendsite.bin" location="project/bin"/>
+  <property name="common.libraries" location="lib"/>
+  <property name="dist"  location="dist"/>
+  <property name="doc" location="doc"/>
+  <property name="content" location="content"/>
+  <property name="javac.debug" value="true"/>
+  <property name="release" location="release"/>
+  <property name="test.source" location="test/source"/>
+  <property name="test.output" location="test/output"/>
+  
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${dist}"/>
+  </target>
+
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->
+<!-- CLASS PATHS    -->
+     
+  <path id="rendsite.class.path">
+      <pathelement path="${classpath}"/>
+      <fileset dir="lib">
+        <include name="**/*.jar"/>
+      </fileset>
+      <pathelement location="${rendsite.bin}"/>
+  </path>
+
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->
+<!-- XXX TARGET: compile	COMPILE SYSTEM      XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  -->
+  <target name="compile"  description="compile rendsite" depends="compile.rendsite.all">
+  </target>
+  
+   <target name="compile.rendsite" depends="init,clean.rendsite"
+        description="compile RendSite" >
+    <!-- Compile the java code from ${src} into ${build} -->
+    <mkdir dir="${rendsite.bin}"/>
+    <javac srcdir="${rendsite.src}" destdir="${rendsite.bin}" debug="${javac.debug}">
+       <classpath refid="rendsite.class.path"/>
+    </javac>
+  </target>
+  
+  <target name="compile.rendsite.all" depends="compile.rendsite"
+        description="compile everything" >		
+  </target>
+
+  
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->
+<!-- XXX TARGET: docs		MAKE DOCUMENTATION   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  -->
+  <target name="docs" depends="init" 
+        description="generate the documentation" >
+  	<delete dir="${dist}/doc"/>
+  	<delete dir="${doc}/api"/>
+   	<mkdir dir="${dist}/doc"/>
+
+	<javadoc packagenames="rendsite.*"
+	   sourcepath="${rendsite.src}"
+	   defaultexcludes="yes"
+	   destdir="${doc}/api"
+	   author="true"
+	   version="true"
+	   use="true"
+	   windowtitle="rendsite">
+	   <classpath refid="rendsite.class.path"/>
+       <docTitle><![CDATA[<h1>rendsite</h1>]]></docTitle>
+	   <bottom><![CDATA[<i>rendsite.</i>]]></bottom>
+<!--	   <tag name="todo" scope="all" description="To do:" />-->
+	   <link offline="true" href="http://java.sun.com/j2se/1.6.0/docs/api" packagelistLoc="C:\tmp"/>
+	</javadoc>
+	
+	<copy todir="${dist}/doc" overwrite="true">
+    		<fileset dir="${doc}/"/>
+    	</copy>
+  </target>
+
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->
+<!-- XXX TARGET: dist	BUILD DISTRIBUTION     XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  -->
+  <target name="dist" depends="clean.all,init,compile,docs"
+        description="generate the distribution" >
+    <!-- Create the distribution directory -->
+    <mkdir dir="${dist}/lib"/>
+	
+    <!-- JAR it with a MANIFEST -->   
+    <jar jarfile="${dist}/lib/rendsitesystem.jar" basedir="${rendsite.bin}"/>
+    <jar jarfile="${dist}/lib/rendsite.jar" manifest="${content}/build/MANIFEST.MF" basedir="${content}/build/readme"/>
+      
+    <!-- drag the rest of the content -->
+    <copy todir="${dist}/lib" overwrite="true">
+    	<fileset dir="lib"/>
+    </copy>
+ 
+    <copy todir="${dist}/bin">
+       <fileset dir="${content}/bin"/>
+    </copy>
+    
+	<copy todir="${dist}">
+       <fileset file="${content}/README.TXT"/>
+	   <fileset file="${content}/install.sh" defaultexcludes="no"/>
+	   <fileset file="${content}/LICENSE.TXT"/>
+       <fileset file="${content}/install.bat" defaultexcludes="no"/>	   
+    </copy>
+ 
+  </target>
+
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->
+<!-- XXX TARGET: clean		CLEAN DEV ENVIRONMENT     XXXXXXXXXXXXXXXXXXXXXXXXXXX  -->
+  <target name="clean.all" depends="clean.rendsite"
+        description="clean before" >
+
+    <delete includeEmptyDirs="true" failonerror="false">
+        <fileset dir="${test.output}"/>
+        <fileset dir="${dist}"/>
+        <fileset dir="${release}"/>
+    </delete>
+    <mkdir dir="${test.output}"/>
+  </target>
+  
+  <target name="clean.rendsite"
+        description="clean rendsite" >
+    <delete includeEmptyDirs="true" failonerror="false">
+        <fileset dir="${rendsite.bin}"/>
+    </delete>
+  </target>
+
+	
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->
+<!-- xxx BUILD PACKAGES xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+	  <target name="test" depends="dist"
+        description="run the development test" >
+	    
+	    <!-- factory checkpoint -->
+	    <java classname="rendsite.commands.Render">
+	    	<classpath>
+	    	           <pathelement path="${java.class.path}"/>
+					   <pathelement path="${dist}/lib"/>
+	    	           <pathelement path="${dist}/lib/rendsite.jar"/>	    
+	    	           <pathelement path="${dist}/lib/things.jar"/>		
+	    	           <pathelement path="${dist}/lib/commons-collections-3.1.jar"/>			
+	    	           <pathelement path="${dist}/lib/commons-io-1.4.jar"/>								   
+	        </classpath>
+	    	<arg value="-VF"/> 
+	    	<arg value="${test.source}"/> 
+            <arg value="${test.source}"/> 
+	    	<arg value="${test.output}"/> 
+	    </java>	 
+    </target>
+	
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->
+<!-- XXX TARGET: package  	PACKAGE IT                XXXXXXXXXXXXXXXXXXXXXXXXXXX  --> 
+   <target name="package" description="create the binary package" depends="dist">
+   
+       <mkdir dir="${release}"/>
+   
+		<!-- clean -->
+    	<delete includeEmptyDirs="true" failonerror="false">
+			<fileset file="${release}/rendsite-binary-package.zip"/>
+    	</delete>
+        
+		<!-- JAR them-->
+    	<jar jarfile="${release}/rendsite-binary-package.zip" basedir="${dist}"/>
+		
+   </target>
+      
+</project>
+
+
+
+

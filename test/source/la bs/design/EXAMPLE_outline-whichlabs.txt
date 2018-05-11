@@ -1,0 +1,20 @@
+Subject: Labs for Nov and Dec
+
+OK, here's the finalized list of labs (per Erich's approval):
+
+For November Release:
+
+Core NW:  4.1 platform on W2K, in an HA configuration.  The products included in the Core NW are:  Proc-v 4.1, Proc-x 4.1,  MailBox 1.1.  We built this Core once, and from time to time, we may need to update it with "patches", which will include things like new  3.5 schema, new  3.5 beans, new Version Library.
+
+Lobe NW1 and Lobe NW2:  4.5 applications on W2K, in a non-HA configuration.  The Lobes are built on a weekly cycle until "Final Assembly".  The Lobes are rotational, meaning we release one Lobe while building out the other Lobe for the next cycle.  The Lobes are attached to the Core NW.  Therefore, we need to assign specific sample trading partners to the specific Lobe.
+
+Core NS:  4.1 platform on Solaris, in a non-HA configuration.  The products included in the Core NS are:  Proc-v 4.1, Proc-x 4.1,  MailBox 1.1.  We built this Core once, and from time to time, we may need to update it with "patches", which will include things like new  3.5 schema, new  3.5 beans, new Version Library.
+
+Lobe NS:  4.5 applications on Solaris, in a non-HA configuration.  This Lobe is built only ONCE during the project, and is attached to the Core NS.
+
+For December Release:
+
+Core DW:  4.6 platform on W2K, in an HA configuration (the reason being HA in 4.6 may be different).  The products included in this Core DW are:  Proc-v 4.6, Proc-x 4.6.  This Core will NOT be built on a weekly cycle, but it must be updated several times as we get new builds of 4.6 platform.  I guess it will be up to us to decide when and how many times we want to update the Core DW.
+
+Lobe DW1 and Lobe DW2:  4.5 applications on W2K, in a non-HA configuration.  These Lobes are different from NW1 and NW2, because in these Lobes, the 4.5 applications are installed on top of XPC 4.6 (with all of the 4.6 pre-reqs).  The Lobes are built on a bi-weekly cycle until "Final Assembly".  The Lobes are rotational, meaning we release one Lobe while building out the other Lobe for the next cycle.  The Lobes are attached to the Core DW.  Therefore, we need to assign specific sample trading partners to the specific Lobe.
+

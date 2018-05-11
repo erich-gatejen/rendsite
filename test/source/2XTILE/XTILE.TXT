@@ -1,0 +1,747 @@
+
+
+
+
+
+
+
+
+
+
+                   XTile VGA Graphics Manager
+
+                          Version 1.0 
+
+
+
+                   Software and Documentation
+              Copyright (C) 1992  Erich P. Gatejen          
+                       All Rights Reserved
+               
+
+          Use and distribution of this package allowed
+          only in accordance with the license agreement     
+          as described in this document.          
+
+
+
+
+
+
+
+
+
+TABLE OF CONTENTS
+
+SECTION 1 - Legal Information                               
+1.1  License Agreement                                      1
+1.1.1  Shareware Portion                                    1
+1.1.2  Licensed Edition                                     2
+1.1.3  Programmers Edition                                  3
+1.2  Other Legal Information                                3
+SECTION 2 - Introduction
+2.1  What XTile Is                                          4
+2.2  Mode X                                                 4
+2.3  XTile Package                                          5
+2.3.1  XTILE???.OBJ and XTILE???.H                          5
+2.3.2  Utilities                                            5
+2.3.3  Hi                                                   6
+2.3.4  XTILE.FNT and XTILE.MSF                              6
+2.3.5  Source Code                                          6
+SECTION 3 - VGA and Memory
+3.1  Xtile and VGA                                          7
+3.2  VGA Memory                                             7
+3.3  XTile Memory Organization                              7
+SECTION 4 - XTile Functions                                 
+4.1  Initialization                                         8
+4.1.1  Init_Mode_X                                          8
+4.1.2  VGA Memory Clear                                     8
+4.2  Page Management                                        8
+4.2.1  Display Page                                         8
+4.2.2  Write Page                                           8
+4.2.3  Vertical Scroll                                      8
+4.3  Tile Management                                        9
+4.3.1  Tile Size                                            9
+4.3.2  Upload Tile to Display Memory                        9
+4.4  Graphics Functions                                     9
+4.4.1  Put a Tile                                          10
+4.4.2  Put a Tile, Leave Color 0 Transparent               10
+4.4.3  Paste a Tile                                        10
+4.4.4  Paste a Tile, Masked                                11
+4.4.5  Move a Tile                                         11
+4.4.6  Put a Box                                           12
+4.5  Fonts                                                 12
+4.5.1  Register a Font                                     12
+4.5.2  Register a Font Mask                                12
+4.5.3  Write a Character                                   13
+4.5.4  Write a String                                      13
+4.5.5  Write a Character, Using Mask                       13
+4.5.6  Write a String, Using Mask                          14
+4.6  Additional Functions                                  14
+4.6.1  Restore Background                                  14
+4.6.2  Set a Color in the Palette                          14
+4.6.3  Set a Block of Colors                               15
+SECTION 5 - Miscellaneous
+5.1  XTile's Future                                        16
+5.2  SuperTILE                                             17    
+XTile VGA Graphics Manager                                  Page 1
+
+SECTION 1  -  LEGAL INFORMATION
+
+     1.1  LICENSE AGREEMENT
+     The XTile VGA Graphics Manager package is the exclusive  
+     property of myself, Erich P. Gatejen.  The term "package"   
+     refers to all software, documentation, and examples
+     distributed and copyrighted as a portion of the XTile VGA
+     Graphics Manager.  All rights are reserved and the use or    
+     distribution of any portion of this package must be in 
+     accordance with the terms described below.  Any use         
+     deviating from these terms is considered a violation of my  
+     rights under US Copyright Law and applicable international  
+     laws.     
+     The term "file(s)" as used below includes any form of data
+     without respect to the media used.
+     
+     1.1.1  Shareware Portion 
+     A portion of the XTile package is considered shareware.This
+     portion may be distributed freely ONLY if all files described
+     in section 1.1.1.1 are included and unchanged.  You may create
+     and distribute programs using the XTile package only if such
+     distribution in any method does not generate revenue for you
+     or any interest you represent or represents you.  If it is
+     your intent or action to generate revenue through any use of
+     this package you must purchase the licensed version as
+     described in section 1.1.2 below.   
+          
+     1.1.1.1   The following list defines what portion of the
+     XTile package can be considered Shareware:
+          XTILE??S.OBJ -   The object file containing the XTile
+                           routines.  This is to be distinguish
+                           from the non-shareware version by the
+                           existence of an 'S' character in the
+                           final position of the file name.  Under
+                           no circumstances is this file to be
+                           represented as the licensed version
+                           or visa-versa.  You may no modify this
+                           file in any way.
+          XTILE??S.H   -   This is the C language header file.   
+          XTILE.DOC    -   This file contains this documentation.
+          ORDER.FRM    -   This is an order form.
+          HI.EXE       -   This is a program that demonstrates the
+                           features of this package.
+          HI.DAT       -   Data for HI. 
+          VGA2PIX.EXE  -   Converts flat bitmap mode 13 graphic
+                           file to the format as used by Xtile.XTile VGA Graphics Manager                                  Page 2
+
+          MASKTILE.EXE -   Creates a mask file from an Xtile
+                           graphic file.
+          MASKFONT.EXE -   Creates a mask file for an Xtile font.
+          XTILE.FNT    -   This is a simple Xtile font.
+     
+     1.1.2  Licensed Edition                 
+     The complete version of Xtile, as described in section 1.1.2.1
+     below, must be purchased and licensed for use to a single
+     user.  The files included in the complete version may only be
+     distributed and/or used as allowed in the descriptions in
+     section 1.1.2.1.  For information on how to obtain the
+     licensed version XTile see the file ORDER.FRM.
+     All programs created using the licensed version may be
+     distributed in any manner.                                  
+
+     1.1.2.1   The following list defines what portion of the
+     XTile package is included in the licensed Edition:       
+          All files in the Shareware portion.  They may be used as
+          described in section 1.1.1 above.
+          XTILE??!.OBJ -   The object file of the XTile routines. 
+                           This file may not be distributed
+                           separately, however, you may link it
+                           with a program as necessary to use it's
+                           routines.  Such a program may be
+                           distributed as desired. You may not
+                           modify this file in any way.
+          XTILE??!.H   -   Same restrictions as above.
+          HI.C         -   This is the source code to the example 
+                           program HI.  You may modify it for
+                           personal use only.  You may not
+                           distribute it as is,  modified in any
+                           way or any program created as a result
+                           of modifying it.   
+          VGA2PIX.C    -   This is the source code to the utility
+                           program VGA2PIX.C.  You may not
+                           distribute it as is, however, any
+                           modification considered to change it by
+                           over 50% is yours to do with as you   
+                           please.                
+          MASKTILE.C   -   Same restrictions as above.
+          MASKFONT.C   -   Same restrictions as above. 
+XTile VGA Graphics Manager                                  Page 3
+
+     1.1.3  Programmers Edition
+     The programmers edition of the XTile package includes all
+     features, licenses, and restrictions of the "Licensed Edition"
+     except for the inclusion of certain components as described
+     below:
+          XTILE??!.ASM  -  This is the source code for the XTile
+                           graphics package.  You may not in any
+                           way distribute this file or any
+                           derivative of this file without written
+                           approval by the me.  You may however
+                           modify it and use the object file as you
+                           are allowed with the XTILE??!.OBJ
+                           included with the Licensed Edition.
+          XTILE??!.USE  -  This is a file used to assemble
+                           XTILE??!.ASM.  The restrictions are the
+                           same as above.
+
+     1.2  OTHER LEGAL INFORMATION
+     Use of any portion of the XTile package is at your own risk. 
+     This author assumes no responsibility or liability for any
+     misfortune that might occur as a result of use of this
+     package.  
+     This package is distributed AS IS, without any warranty or
+     responsibility for support by this author.
+     Any terms of purchase concerning the Licensed Edition or the
+     Programmers Edition will be stated on the order form.  These
+     order forms, and therefore the terms, may be changed at any
+     time.
+
+XTile VGA Graphics Manager                                  Page 4
+
+SECTION 2 - INTRODUCTION
+
+     2.1  WHAT XTILE IS.
+     While looking for a graphics package to help put together an
+     adventure game I discovered the existence of Mode X.  I liked
+     what it offered and thought it would be perfect.  Yet there
+     seemed to be very few packages that supported it.  So, I put
+     away the adventure, cracked a couple books, and decided to
+     create XTile.  
+     My objectives were simple:  I wanted it to be fast, simple to
+     interface with, and easy to maintain.  Making it fast was
+     actually the easiest.  I eliminated as much overhead as
+     possible, however this means little error checking, so be
+     careful what you pass to these functions.  I used word sized
+     moves over byte sized whenever possible.  I didn't meet my
+     second objective as well I had hoped.  I went with passing a 
+     number of parameters as opposed to a structure, but that was
+     the best I could do.  The last objective just meant a lot of
+     discipline and a horde of comments.  Buy the source and you'll
+     see what I mean.
+     XTile is written entirely in 8086 assembler.  I used Turbo ASM
+     in the 'Ideal' mode.  So if you intend to purchase the source
+     code and don't have Turbo ASM you'll need to tailor it to your
+     assembler.  XTile is designed to interface with Turbo C ( and
+     it's derivatives, I used Turbo C++ for testing ) in the LARGE
+     memory model.  The large model seemed to be the logical choice
+     for a graphics application considering pictures can soak up a
+     lot of memory.  Once again, if you don't have one of Borland's
+     C compilers, you may need to obtain the source code and
+     tailor it to your needs.  
+
+     2.2  MODE X.
+     I'm uncertain where the name 'Mode X' comes from.  I've seen
+     it used everywhere from Echo conferences to Dr. Dobbs Journal. 
+     The mode itself was not documented in the original VGA specs. 
+     Then again, knowing it's unique nature, they may not have even
+     known it existed.
+     Mode X offers a resolution of 320 by 240 in 256 colors.  But
+     you get more than just 40 extra lines over Mode 13h.  You get
+     3 screen pages plus a little extra for off-screen data.  More
+     importantly you can use the latches and masks.  What does that
+     mean?  You can move 4 pixels at time from one area of display
+     memory to another with only one move instruction.  Since Mode
+     X gives you access plenty of off-screen memory you can
+     upload a tile there and take advantage of the 4 pixel move. 
+     This all translates to FAST GRAPHICS!! 
+
+     Ok, so what's the catch?  Well, there is one disadvantage.  In
+     using Mode X you don't have the flat bitmap of mode 13h. XTile VGA Graphics Manager                                  Page 5
+
+     Each address of the display memory actually points to 4   
+     pixels, one on each plane, at the same time.  Yes, mode 13h
+     does still have planes but a programmer can ignore them, each
+     pixel has a unique address.  What does this all mean?  In
+     XTile all X coordinates must be divisible by 4.  This also
+     applies to horizontal size of all tiles ( tiles = pictures,
+     images, whatever you like to call them ).  There are ways
+     around this in mode X but it takes a lot of overhead.  Future
+     releases of XTile will include such functions. 
+     
+     2.3  XTile PACKAGE
+          
+     2.3.1  XTILE???.OBJ and XTILE???.H
+     XTILE.OBJ is the linkable object.  Remember, it's only for the
+     'C' language ( I've only tested it with Borland compiler so  
+     it may not work with others ) and uses the 'LARGE' memory
+     model.  XTILE.H is the 'C' header file that defines all the
+     functions and constants necessary to interface with XTILE.OBJ.
+     There are 22 functions included in this package.
+
+     2.3.2  UTILITIES.
+     There are 3 utility programs included.  They are described
+     below.    
+     
+     2.3.2.1  VGA2PIX.
+     The data format for tiles is unique.  Instead of being laid
+     out pixel by pixel a scan line at a time, it is laid out a
+     plane at a time.  This utility will reformat a standard bit-
+     map into a tile bitmap, which I call the PIX format.  A
+     'Standard bitmap' is defined as such: 16bit word for X size,
+     16bit word for Y size, and the actual picture data pixel after
+     pixel, scanline after scanline.  This is the same format as
+     output by most 256 color BGI drivers.
+     The input file to VGA2PIX is expected to have the file
+     extension of .VGA.  The output will have the extension .PIX.
+     If you plan to have a single file hold multiple tile bitmaps,
+     each tile must already be in the PIX format BEFORE you
+     assemble the file.  ( This is how you would assemble your own
+     font. )
+     NOTE:  256PAINT, distributed by Pod Bay Enterprises, is an
+     ideal program to create graphics for XTile.  It's output can
+     be used by VGA2PIX without any modification. 
+     
+     2.3.2.2  MASKTILE.
+     Color 0 is considered transparent for many XTile operations. 
+     Should you write a tile directly to the screen from system
+     memory, you can chose a function that will simply not write
+     color 0 and therefor be transparent.  However, to use the XTile VGA Graphics Manager                                  Page 6
+
+     transparent color when moving tiles already uploaded to screen
+     memory you must supply the function a mask set.  The MASKTILE
+     utility will create a mask set for you.  Just supply it with
+     the name of a .PIX file and it will create a .MSK file
+     containing that tile's mask set. 
+     Such as is with VGA2PIX, you must MASKTILE each .PIX
+     individually before assembling them into one file.
+
+     2.3.2.3  MASKFONT
+     A font mask gives the ability to write characters to the
+     screen while leaving color 0 transparent.  To create a font
+     mask just give MASKFONT the name of a font file and how many
+     characters in the font.  The extension on the file containing
+     the font mask will have the extension .MSF.
+
+     2.3.3  HI
+     This is a program I've included to give you an idea of what
+     XTile can do.  
+
+     2.3.4  XTILE.FNT and XTILE.MSF
+     XTILE.FNT is a simple font included for your use.  XTILE.MSF
+     is it's font mask file.
+
+     2.3.5  SOURCE CODE
+     The two purchased editions include well comment source code
+     for you to examine or possibly use.  Fully read the legal
+     section of this documentation so you are aware of what
+     you may and may not do with the source code.  I'm afraid
+     ignorance is not an excuse ( if it was I'd be a rich man by
+     now ). 
+
+XTile VGA Graphics Manager                                  Page 7
+
+SECTION 3 - VGA AND MEMORY 
+
+     3.1  XTile AND VGA
+     As far as I know, Mode X works on all VGAs.  This should mean 
+     that XTile will as well.  However, since I don't have one of
+     every system ever made, there may be a couple rebellious     
+     VGAs out there.   I have yet to find one but you never can   
+     tell.
+
+     3.2  VGA MEMORY
+     A VGA card comes with 256k.  However, in Mode X, each address 
+     has 4 planes associated with it ( each plane having 64k ).   
+     Therefore there are only 64k addresses to cover 256k of      
+     display memory. 
+
+     3.3  XTile MEMORY ORGANIZATION  
+     The following is a VGA display memory organization that allows 
+     the best use of the XTile functions.  You do not have to     
+     follow this layout to use the XTile function.  However, the  
+     constants defined in the XTile header file are based upon this 
+     layout.
+
+          ADDRESS(dec)        NAME               CONSTANT NAME   
+      /----------------------------------------------------------\
+      |        0       | First display page      | PAGE0         |
+      |    19200       | Second display page     | PAGE1         |
+      |    38400       | Background display page | BACKGROUND    |
+      |    57600       | Off-screen storage for  | STORE         |
+      |                |  uploaded tiles         |               |
+      \----------------------------------------------------------/
+      
+     The primary purpose of the BACKGROUND page is to restore an
+     area of either pages that has been corrupted.  This is ideal
+     for applications that move tiles about on a static background
+     picture.  
+
+     You can display PAGE0 through the BACKGROUND page ( and any  
+     where in between ) but the STORE area can only be used for
+     uploaded tiles.  Should you not need page flipping or a
+     background page then you can certainly use these areas for
+     uploaded tiles.
+
+
+
+XTile VGA Graphics Manager                                  Page 8
+
+SECTION 4 - XTile FUNCTIONS 
+
+     This section describes each function of XTile and how to use
+     it as well as what constants are made available.
+
+     4.1  INITIALIZATION 
+     
+     4.1.1  INITIALIZING MODE X
+     Function : void Init_Mode_X()
+     This function set the VGA into Mode X.  It must be used before 
+     any other functions are called.
+
+     4.1.2  VGA MEMORY CLEAR
+     Function : void MSD_Clear( unsigned char     Color )
+     This function will set all 256k of the VGA memory to a single
+     color.  Color is a single byte value ( 256 possible colors ).
+ 
+
+     4.2  PAGE MANAGEMENT
+
+     4.2.1  DISPLAY PAGE
+     Function : void Set_Display_Page( unsigned int   Page )
+     This function sets the current page to be displayed.  Page is
+     the address in VGA memory where to start displaying from.  You
+     can use the predefined constants PAGE0, PAGE1, or BACKGROUND
+     however any address in between is also valid. 
+ 
+     4.2.2  WRITE PAGE
+     Function : void Set_Write_Page( unsigned int    Page )
+     This function sets the page in which most GRAPHICS FUNCTIONS
+     will write to.  Page is as in the Set_Display_Page function.
+
+     4.2.3  VERTICAL SCROLL
+     Function : void Screen_Scroll( unsigned int   Direction,
+                                    unsigned int   Distance,
+                                    unsigned int   Step        )
+     This function performs a vertical scroll.  Direction must be
+     either the FORWARD constant or the BACK constant.  A FORWARD 
+     scroll would be, for example, from PAGE0 to PAGE1.  Distance 
+     is the number of scan lines to scroll.  The constant FULL_PAGE 
+     will scroll the screen an entire page.  Step is the speed in
+     which to scroll.  The higher the Step, the faster the scroll
+     will be.  
+
+XTile VGA Graphics Manager                                  Page 9
+
+     4.3  TILE MANAGEMENT
+
+     4.3.1  TILE SIZE
+     Function : int Tile_Size( unsigned int  Delta_X,
+                               unsigned int  Delta_Y   )    
+     This function will return the size in bytes of a tile. 
+     Delta_X is the tile's X size and Delta_Y is the tile's Y size.
+
+     4.3.2  UPLOADING TILES TO DISPLAY MEMORY
+     Function : void MD_Upload_Tile ( unsigned int   Offset,
+                                      unsigned int   Size,
+                                      unsigned char  far *Data )
+     This function will upload a tile to display memory.  This is
+     not the same as putting a tile on the screen.  A tile that has
+     been uploaded may then be put on the active page using 
+     SD_Paste_Tile or SD_Paste_Tile.  For tiles that are
+     constantly used, it is much faster to upload the tile and then
+     paste it.  Offset is the location in off-screen memory where
+     the tile is to be put.  This can be any address between 0 and
+     65535.  However, using the memory layout recommended in
+     section 3.3, the a tile should be placed at or above the
+     constant STORE (addr 57600).  Size is the size of the tile in
+     number of bytes.  IMPORTANT:  An uploaded tile will actually
+     occupy only one quarter of the addresses in the display memory
+     than the Size of the tile ( i.e. a tile that is 16 bytes long
+     will only reside at addresses 57600 through 57603 of display
+     memory ).  Remember, this is because a single address
+     represents 4 bytes, one in each plane.
+          
+
+     4.4  GRAPHICS FUNCTIONS
+
+     4.4.1  PUT TILE.  FROM SYSTEM MEMORY TO SCREEN
+     Function : void MS_Put_Tile ( unsigned int   Start_X,
+                                   unsigned int   Start_Y,
+                                   unsigned int   Delta_X,
+                                   unsigned int   Delta_Y,
+                                   unsigned char  far  *Data )
+     This function will take a tile from system memory and place it
+     on the active write page.  Start_X and Start_Y are the 
+     coordinates to place the tile at.  Delta_X and Delta_Y are the
+     X,Y size of the tile to be placed.  IMPORTANT:  Start_X and
+     Delta_X MUST be evenly divisible by 4 ( i.e. 0, 4, 8, etc. ).
+     Data is the pointer to the tile in system memory.
+
+
+
+XTile VGA Graphics Manager                                  Page 10
+
+     4.4.2  PUT TILE WITH 0 COLOR TRANSPARENT.
+     Function : void MS_Put_Tile_M ( unsigned int   Start_X,
+                                     unsigned int   Start_Y,
+                                     unsigned int   Delta_X,
+                                     unsigned int   Delta_Y,
+                                     unsigned char  far  *Data )
+     This function will take a tile from system memory and place it
+     on the active write page.  However, color 0 will be
+     transparent ( i.e. Any pixel of color 0 in the tile to be Put
+     will not disturb whatever is on the screen at that point ). 
+     Start_X and Start_Y are the  coordinates to place the tile at. 
+     Delta_X and Delta_Y are the X,Y size of the tile to be placed. 
+     IMPORTANT: Start_X and Delta_X MUST be evenly divisible by 4
+     ( i.e. 0, 4, 8, etc. ).  Data is the pointer to the tile in  
+     system memory.                                              
+          
+     4.4.3  PASTE A TILE.  FROM OFF SCREEN MEMORY TO SCREEN
+     Function : SD_Paste_Tile ( unsigned int   Start_X,
+                                unsigned int   Start_Y,
+                                unsigned int   Delta_X,
+                                unsigned int   Delta_Y,
+                                unsigned int   Tile     )
+     This function will take a tile from off-screen memory and
+     place it on the active write page.  The tile must have
+     previously been uploaded to off-screen memory to use this
+     function.  Start_X and Start_Y are the coordinates to place
+     the tile  at.  Delta_X and Delta_Y are the X,Y size of the
+     tile to be placed.  IMPORTANT:  Start_X and Delta_X MUST be
+     evenly divisible by 4 ( i.e. 0, 4, 8, etc. ).
+     Tile is the location where the tile was uploaded.
+XTile VGA Graphics Manager                                  Page 11
+
+     4.4.4  PASTE A TILE.  USE MASK TO LEAVE COLOR 0 TRANSPARENT
+     Function : SD_Paste_Tile_M ( unsigned int   Start_X,
+                                  unsigned int   Start_Y,
+                                  unsigned int   Delta_X,
+                                  unsigned int   Delta_Y,
+                                  unsigned int   Tile,
+                                  unsigned char  far *Mask )
+     This function will take a tile from off-screen memory and
+     place it on the active write page.  The tile must have
+     previously been uploaded to off-screen memory to use this
+     function.  Start_X and Start_Y are the coordinates to place
+     the tile  at.  Delta_X and Delta_Y are the X,Y size of the
+     tile to be placed.  IMPORTANT:  Start_X and Delta_X MUST be
+     evenly divisible by 4 ( i.e. 0, 4, 8, etc. ).  Tile is the   
+     location where the tile was uploaded.  Mask is a pointer to a
+     mask set in system memory.  This function will use the mask
+     set to leave color 0 transparent when the tile is written to
+     the active write page.  A mask set can be generated for a tile
+     by using the MASKTILE utility described in section 2.3.2.2
+     above.
+
+     4.4.5  MOVE A TILE.
+     Function:  void SD_Move_Tile   (  unsigned int    Start_X,
+                                       unsigned int    Start_Y,
+                                       unsigned int    Delta_X,
+                                       unsigned int    Delta_Y,
+                                       unsigned int    New_X,
+                                       unsigned int    New_Y,
+                                       unsigned int    Disp      )
+     This function will copy a tile ( or any region ) to the
+     background page, alternate page, or somewhere else on the
+     active write page.  Start_X and Start_Y are the X,Y
+     coordinates of the tile to be moved.  Delta_X and Delta_Y are
+     the X and Y size of the tile.  New_X and New_Y are the new
+     coordinates of the tile after it is copied.  Disp is the type
+     of copy to perform, the constants ON_PAGE, TO_ALT_PAGE, and
+     TO_BACKGROUND are supplied for the three different types of
+     copies.  ON_SCREEN copies to somewhere on the active write
+     page.  TO_ALT_PAGE copies to somewhere on the alternate page. 
+     TO_BACKGROUND copies to somewhere on the background page. 
+     This function is suitable for scrolling.  
+
+ 
+
+
+
+
+
+XTile VGA Graphics Manager                                  Page 12
+
+     4.4.6  PUT A BOX ON THE SCREEN.
+     Function:  void MS_Set_Box ( unsigned int         Start_X,
+                                  unsigned int         Start_Y,
+                                  unsigned int         Delta_X,
+                                  unsigned int         Delta_Y,
+                                  unsigned char        Color     )
+     This function will put a filled box on the screen using the
+     specified color.  Start_X and Start_Y are the coordinates to
+     place the box at.  Delta_X and Delta_Y are the X,Y size of the
+     box to be placed.  IMPORTANT:  Start_X and   Delta_X MUST be
+     evenly divisible by 4 ( i.e. 0, 4, 8, etc. ).
+
+
+     4.5  FONTS
+     To use a font it you must first register it with XTile.  This
+     will upload the font to off-screen memory and set up internal
+     pointers to handle any font writes.  Each character in a font
+     is 8 pixel wide and 10 pixels high. 
+
+     4.5.1  REGISTER A FONT.
+     Function:  void Register_Font  (  unsigned int   Offset,
+                                       unsigned char  NumChars,
+                                       unsigned char  Base_Char,
+                                       unsigned char  far *Data )
+     This function will register a font with XTile.  The font will
+     be uploaded into off-screen memory ( It will occupy as much
+     space in off-screen memory as the size of the font in bytes
+     divided by 4 ).  Offset is the location in off-screen memory
+     where the font is to be put.  NumChars is the number of
+     characters that are in the font.  Base_Char is the first
+     character in the font in relation to the ASCII table.  For
+     example, should the character A be implemented as the first
+     character in a font and the Base_Char is 'A' ( 41h ) then you
+     would pass 'A' to SD_Char when you wanted your A character to 
+     be written.
+     The font supplied with XTile implements the characters on the
+     ASCII table '0' through 'Z'.  The Base_Char is '0'.
+
+     4.5.2  REGISTER A MASK SET FOR A FONT.
+     Function: void Register_Font_Masks (unsigned char far *Masks)
+     This function will register a font mask for the currently
+     registered font.  A font mask will allow you to write
+     characters while leaving color 0 transparent.  The utility
+     FONTMASK will create a mask set for a font.  Masks is a
+     pointer to the mask set in memory.
+
+
+
+XTile VGA Graphics Manager                                  Page 13
+
+     4.5.3  WRITE A CHARACTER
+     Function: void SD_Char (  unsigned int  X_Loc,
+                               unsigned int  Y_Loc,
+                               unsigned int  Character )
+     SD_Char will write a character to the current write screen. 
+     The character is passed in Character and it must be
+     implemented in the font registered.  X_Loc and Y_Loc are the
+     coordinates to place the character at.
+     IMPORTANT:  X_Loc MUST be evenly divisible by 4 ( i.e. 0, 4,
+     8, etc. ).      
+
+     4.5.4  WRITE A STRING
+     Function: void SD_String (   unsigned int  X_Loc,
+                                  unsigned int  Y_Loc,
+                                  unsigned int  far *String )
+     SD_String will write a string of characters to the current
+     write screen.  String points to the string in system memory,
+     terminated by a null character.
+     Each character must be implemented in the font registered. 
+     X_Loc and Y_Loc are the  coordinates to place the character
+     at.
+     IMPORTANT:  X_Loc MUST be evenly divisible by 4 ( i.e. 0, 4,
+     8, etc. ).      
+
+     4.5.5  WRITE A CHARACTER, LEAVE COLOR 0 TRANSPARENT
+     Function: void SD_Char_M (  unsigned int     X_Loc,
+                                 unsigned int     Y_Loc,
+                                 unsigned int     Character )
+     SD_Char will write a character to the current write screen.
+     However, color 0 will be transparent.  A font mask set must be
+     registered to use this function.
+     The character is passed in Character and it must be
+     implemented in the font registered.  X_Loc and Y_Loc are the
+     coordinates to place the character at.
+     IMPORTANT:  X_Loc MUST be evenly divisible by 4 ( i.e. 0, 4,
+     8, etc. ).      
+
+
+
+
+
+
+
+XTile VGA Graphics Manager                                  Page 14
+
+     4.5.6  WRITE A STRING, LEAVE COLOR 0 TRANSPARENT
+     Function: void SD_String_M  ( unsigned int  X_Loc,
+                                   unsigned int  Y_Loc,
+                                   unsigned int  far *String     )
+     SD_String will write a string of characters to the current
+     write screen.  However, color 0 will be transparent.  A font
+     mask set must be registered to use this function.
+     String points to the string in system memory, terminated by a
+     null character.
+     Each character must be implemented in the font registered. 
+     X_Loc and Y_Loc are the  coordinates to place the character
+     at.
+     IMPORTANT:  X_Loc MUST be evenly divisible by 4 ( i.e. 0, 4,
+     8, etc. ).      
+
+     4.6  ADDITIONAL FUNCTIONS
+
+     4.6.1  RESTORE REGION FROM BACKGROUND
+     Function: void SD_BKG_Restore ( unsigned int  Start_X,
+                                     unsigned int  Start_Y,
+                                     unsigned int  Delta_X,
+                                     unsigned int  Delta_Y  )
+     This function will move a region of the BACKGROUND page to the
+     current write screen.  The move will place the region at the
+     same X,Y coordinates as it was at on the BACKGROUND page.
+     Start_X and Start_Y are the coordinates on the BACKGROUND page
+     of the region to be restored.  Delta_X and Delta_Y are the X,Y
+     size of the region.
+     IMPORTANT:  Start_X and Delta_X MUST be evenly divisible by 4
+     ( i.e. 0, 4, 8, etc. ).
+
+     4.6.2  SET A COLOR IN THE PALETTE.
+     Function: void Set_Pal_Color (  unsigned int   Color,
+                                     unsigned int   Red,
+                                     unsigned int   Green,
+                                     unsigned int   Blue   )
+     This function will set a color in the palette.  Color is the
+     number of the color to be changed, range 0 through 255.  Red,
+     Green, Blue are the RGB values of the color, each range 0
+     through 63.
+
+
+
+XTile VGA Graphics Manager                                  Page 15
+
+     4.6.3  SET A BLOCK OF COLORS IN THE PALETTE. 
+     Function: void Set_Pal_Block (  unsigned int   Start,
+                                     unsigned int   Number,
+                                     unsigned char  far *Pal )
+     This function will set a block of colors in the palette. 
+     Start is the number of the first color to be set.  Number is
+     the number of colors to be set.  Pal is a pointer to the RGB
+     data for the block of colors.  The RGB data format is the same
+     as used by most other palette files.
+
+
+
+
+
+
+
+
+
+
+XTile VGA Graphics Manager                                  Page 16
+
+SECTION 5 - MISCELLANEOUS
+
+     5.1  XTile's FUTURE
+     I had originally never intended to release XTile.  However,
+     since I had put so much time into it, it didn't make sense to
+     abandon it after completion.  Yet, another project has
+     crossed my path ( SuperTILE, see the next section ). 
+     Therefore, this will be the only release of XTile.  This is
+     the primary reason I have made the source code available at a
+     reasonable rate.         
+
+     5.2  XTile's SUCCESSOR, SuperTILE
+     As soon as this package is completed, it's successor will be
+     in development.  SuperTILE will run SuperVGA graphics        
+     (640x400x256 colors) with some of the advantages of Mode X. 
+     Initial tests show that it will be, in comparison to standard
+     methods of SVGA graphics, blindingly fast.  Not only will it
+     use the 4 byte transfers but it will actually eliminate
+     banking.
+     NOTE: I plan to make fixes to XTile available in the SuperTILE
+     releases.
+
