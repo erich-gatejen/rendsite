@@ -13,7 +13,11 @@
   <property name="release" location="release"/>
   <property name="test.source" location="test/source"/>
   <property name="test.output" location="test/output"/>
-  
+
+  <condition property="isUnix">
+      <os family="unix" />
+  </condition>
+
   <target name="init">
     <!-- Create the time stamp -->
     <tstamp/>
@@ -170,8 +174,38 @@
         
 		<!-- JAR them-->
     	<jar jarfile="${release}/rendsite-binary-package.zip" basedir="${dist}"/>
-		
+
    </target>
+
+    <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->
+    <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->
+    <!-- XXX TARGET: docker  	Build docker image             XXXXXXXXXXXXXXXXXXXXXXXXXX  -->
+    <target name="docker" description="create docker image" depends="package" if="isUnix">
+
+        <!-- Docker assets -->
+        <copy todir="${release}" overwrite="true">
+            <fileset file="project/docker/Dockerfile"/>
+            <fileset file="project/docker/setup.sh"/>
+            <fileset file="project/docker/render.sh"/>
+            <fileset file="project/docker/internalrender.sh"/>
+        </copy>
+
+        <exec executable="docker" dir="release">
+            <arg value="build"/>
+            <arg value="-t"/>
+            <arg value="erichgatejen/rendsite:latest"/>
+            <arg value="."/>
+        </exec>
+
+        <delete includeEmptyDirs="true" failonerror="false">
+            <fileset file="${release}/Dockerfile"/>
+            <fileset file="${release}/setup.sh"/>
+            <fileset file="${release}/internalrender.sh"/>
+        </delete>
+
+        <chmod file="${release}/render.sh" perm="755"/>
+
+    </target>
       
 </project>
 
