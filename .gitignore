@@ -13,3 +13,9 @@ hs_err_pid*
 .idea/
 .project
 .classpath
+
+doc/
+dist/
+project/bin/
+release/
+

@@ -122,6 +122,7 @@ public class Render extends CommandRoot implements Constants {
 				if (!configuration.changeFile.createNewFile()) {
 					if (!configuration.changeFile.canWrite()) throw new Exception(messaging.lookup("xxxcommand.changefile.cannotwrite", "Cannot write to change file at ") + changeFilePath);				
 				}
+				defaultLogger.info("Creating change file at " + changeFilePath);
 			}
 
 			// Announce completion of config setup.  This should also test the resources before we start running.
